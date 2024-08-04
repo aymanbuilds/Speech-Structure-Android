@@ -1,0 +1,19 @@
+Flask App:
+----------
+
+pip install Flask Flask-SQLAlchemy Flask-Bcrypt Flask-Cors SQLAlchemy transformers torch spacy sentence-transformers
+python -m spacy download en_core_web_lg
+
+
+Android App:
+------------
+
+If you'd host the app locally, make sure to run the flask app,
+get the domain (IP Address), on windows through cmd (ipconfig)
+Put that domain in these files ->
+	
+	\src\main\res\xml\network_security_config.xml :   
+		<domain includeSubdomains="true">192.168.0.0</domain>
+
+	\src\main\java\com\example\speechstruct\Utilities.java :
+		public static String DOMAIN = "http://192.168.0.0:5000";

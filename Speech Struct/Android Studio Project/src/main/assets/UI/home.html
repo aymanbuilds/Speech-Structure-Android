@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/common.css">
+</head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper centered padding20 column gap30">
+    <!-- Main Header -->
+    <header class="main row aitems-center jcontent-sbetween top-bar">
+        <img class="logo" src="assets/icons/logo.png" alt="Logo">
+        <h1 class="sub-title">SpeechStruct</h1>
+        <img onclick="Android.logout()" class="cpointer logo" src="assets/icons/logout.png" alt="Logout">
+    </header>
+
+    <!-- Main Section -->
+    <main class="stretched">
+        <!-- Voice Record Section -->
+        <section id="voiceRecordSection" class="stretched column gap30 aitems-center jcontent-center">
+            <img src="assets/icons/mic.png" alt="Mic">
+            <h2 id="audioTime">00:00:00</h2>
+
+            <div class="center question">
+                <p id="questionText"></p>
+            </div>
+
+            <div class="row aitems-center jcontent-sbetween stretchedX">
+                <div onclick="resetListening()" class="sub-title cpointer">Cancel</div>
+
+                <div onclick="startListening()" class="button center">
+                    <img class="cpointer" src="assets/icons/play.png" alt="¨Play">
+                </div>
+
+                <div onclick="concludeConversation()" class="sub-title cpointer">Done</div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script>
+    let isPlaying = false;
+    let audioStartTime = null;
+    let elapsedTime = 0;
+    let timerInterval = null;
+
+    function setQuestion(question) {
+        document.getElementById('questionText').innerText = question;
+    }
+
+    function stopListening() {
+        const imgElement = document.querySelector('#voiceRecordSection .button img');
+        isPlaying = false;
+        imgElement.src = 'assets/icons/play.png';
+        clearInterval(timerInterval);
+    }
+
+    function startListening() {
+        const imgElement = document.querySelector('#voiceRecordSection .button img');
+        const audioTimeElement = document.getElementById('audioTime');
+
+        if (isPlaying) {
+            imgElement.src = 'assets/icons/play.png';
+            clearInterval(timerInterval);
+            Android.stopListening();
+        } else {
+            imgElement.src = 'assets/icons/pause.png';
+            audioStartTime = new Date();
+            timerInterval = setInterval(updateAudioTime, 1000);
+            Android.startListening();
+        }
+        isPlaying = !isPlaying;
+    }
+
+    function updateAudioTime() {
+        if (audioStartTime) {
+            elapsedTime += 1;
+            const hours = String(Math.floor(elapsedTime / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((elapsedTime % 3600) / 60)).padStart(2, '0');
+            const seconds = String(elapsedTime % 60).padStart(2, '0');
+            document.getElementById('audioTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+    }
+
+    function resetListening() {
+        const imgElement = document.querySelector('#voiceRecordSection .button img');
+
+        elapsedTime = 0;
+        document.getElementById('audioTime').textContent = '00:00:00'; // Reset the display
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        Android.resetListening();
+
+        imgElement.src = 'assets/icons/play.png';
+        isPlaying = false;
+    }
+
+    function concludeConversation(){
+        Android.concludeConversation();
+    }
+</script>
+</body>
+
+</html>
