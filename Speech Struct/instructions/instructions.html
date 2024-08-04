@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeechStruct App Instructions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .admin, .user {
+            margin-bottom: 20px;
+        }
+        .admin ul, .user ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .admin li, .user li {
+            margin: 10px 0;
+        }
+        .login-credentials {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>SpeechStruct App Instructions</h1>
+
+    <h2>User Types and Credentials</h2>
+    <div class="login-credentials">
+        <strong>Admin:</strong> admin / 123456<br>
+        <strong>User:</strong> user / 123456
+    </div>
+
+    <h2>App Flow</h2>
+    <ol>
+        <li>Splash Screen</li>
+        <li>Terms and Conditions Acceptance</li>
+        <li>Login Page</li>
+    </ol>
+
+    <div class="admin">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li>If an admin is logged in, they will be navigated to the Admin Panel.</li>
+            <li>Admin can perform the following actions:
+                <ul>
+                    <li>Create Terms and Conditions records</li>
+                    <li>Add and manage questions</li>
+                    <li>Add and manage users</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="user">
+        <h2>User Page</h2>
+        <ul>
+            <li>If a user is logged in, they will be navigated to the User Page.</li>
+            <li>On the User Page, the user can:
+                <ul>
+                    <li>Click on the play icon to listen to a question</li>
+                    <li>A prompt will appear with "Start Speaking" to let the user start speaking</li>
+                    <li>Once the user answers, the app will keep asking questions until the last question</li>
+                    <li>The user must click "Done" to conclude the conversation and send the data to the Flask app API</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>
