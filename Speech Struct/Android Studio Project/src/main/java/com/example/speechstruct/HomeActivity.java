@@ -24,9 +24,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -53,6 +57,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private TextToSpeech textToSpeech;
     private SpeechRecognizer speechRecognizer;
     private List<QuestionTemplate> questionList;
+    private List<QuestionTemplate> finalQuestionList;
     int questionIndex = 0;
     private boolean isListening = false;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -88,6 +93,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         requestPermissions();
 
         questionList = new ArrayList<>();
+        finalQuestionList = new ArrayList<>();
 
         textToSpeech = new TextToSpeech(this, this);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -256,7 +262,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         speechRecognizer.cancel();
     }
 
-    private void handleSpeechResults(ArrayList<String> matches) {
+    /*private void handleSpeechResults(ArrayList<String> matches) {
         runOnUiThread(() -> {
             stopListening();
             if (matches != null && !matches.isEmpty()) {
@@ -273,6 +279,212 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     });
                     srError = false;
                     isListening = false;
+                }
+            } else {
+                Toast.makeText(HomeActivity.this, "No speech recognized", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }*/
+
+    private void handleSpeechResults(ArrayList<String> matches) {
+        runOnUiThread(() -> {
+            stopListening();
+
+            if (matches != null && !matches.isEmpty()) {
+                String answer = matches.get(0);
+
+                // Find the current question
+                QuestionTemplate currentQuestion = questionList.get(questionIndex);
+
+                // Check the response type of the current question
+                if ("Open Response".equals(currentQuestion.getResponseType())) {
+                    // Prepare the JSON object to send to the API for "Open Response" questions
+                    JSONObject requestData = new JSONObject();
+                    try {
+                        JSONArray questionsArray = new JSONArray();
+                        for (QuestionTemplate question : questionList) {
+                            if ("Open Response".equals(question.getResponseType())) {
+                                JSONObject questionJson = new JSONObject();
+                                questionJson.put("question", question.getQuestion());
+                                questionJson.put("answer", new JSONArray());
+                                questionsArray.put(questionJson);
+                            }
+                        }
+
+                        requestData.put("questions", questionsArray);
+                        requestData.put("answer", answer);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    // Send the request to the API
+                    String url = Utilities.DOMAIN + "/match-answers";
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                            Request.Method.POST,
+                            url,
+                            requestData,
+                            response -> {
+                                try {
+                                    // Process API response
+                                    JSONArray responseQuestions = response.getJSONArray("questions");
+                                    List<QuestionTemplate> answeredQuestions = new ArrayList<>();
+
+
+                                    for (int i = 0; i < responseQuestions.length(); i++) {
+                                        JSONObject questionJson = responseQuestions.getJSONObject(i);
+                                        String questionText = questionJson.getString("question");
+                                        JSONArray answersArray = questionJson.getJSONArray("answer");
+
+                                        for (QuestionTemplate question : questionList) {
+                                            if (question.getQuestion().equals(questionText) && "Open Response".equals(question.getResponseType())) {
+                                                if (answersArray.length() > 0) {
+                                                    question.setUserAnswer(answersArray.join(", "));
+                                                    finalQuestionList.add(new QuestionTemplate(question.getQuestion(), question.getUserAnswer()));
+                                                    answeredQuestions.add(question);
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    questionList.removeAll(answeredQuestions);
+
+                                    questionIndex = 0;
+                                    if (!questionList.isEmpty()) {
+                                        speakQuestion();
+                                    } else {
+                                        Toast.makeText(HomeActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                                        speak("Thank you for your time!");
+                                        stopListening();
+                                        webView1.evaluateJavascript("javascript:stopListening()", value -> {});
+                                        srError = false;
+                                        isListening = false;
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(HomeActivity.this, "Error processing API response", Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            error -> {
+                                error.printStackTrace();
+                                String errorMessage = "Error connecting to API";
+
+                                if (error.networkResponse != null) {
+                                    try {
+                                        String responseBody = new String(error.networkResponse.data, "UTF-8");
+                                        JSONObject errorJson = new JSONObject(responseBody);
+                                        if (errorJson.has("error")) {
+                                            errorMessage = errorJson.getString("error");
+                                        } else {
+                                            errorMessage = responseBody;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        errorMessage = "Error parsing server response";
+                                    }
+                                } else if (error.getMessage() != null) {
+                                    errorMessage = error.getMessage();
+                                }
+
+                                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                                speak(errorMessage);
+                                speechRecognizer.cancel();
+                                stopListening();
+                                srError = true;
+                                isListening = false;
+                                webView1.evaluateJavascript("javascript:stopListening()", value -> {});
+                            }
+                    );
+
+                    Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+                } else {
+                    // Prepare the JSON object to send to the API for non-"Open Response" questions
+                    JSONObject requestData = new JSONObject();
+                    try {
+                        requestData.put("question", currentQuestion.getQuestion());
+                        requestData.put("answer", answer);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    // Send the request to the API
+                    String url = Utilities.DOMAIN + "/match-question-answer";
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                            Request.Method.POST,
+                            url,
+                            requestData,
+                            response -> {
+                                try {
+                                    if (response.has("question") && response.has("answer")) {
+                                        String matchedQuestion = response.getString("question");
+                                        String matchedAnswer = response.getString("answer");
+
+                                        for (int i = 0; i < questionList.size(); i++) {
+                                            QuestionTemplate question = questionList.get(i);
+                                            if (question.getQuestion().equals(matchedQuestion)) {
+                                                question.setUserAnswer(matchedAnswer);
+                                                finalQuestionList.add(new QuestionTemplate(matchedQuestion, matchedAnswer));
+
+                                                questionList.remove(i);
+                                                break;
+                                            }
+                                        }
+
+                                        questionIndex = 0;
+                                        if (!questionList.isEmpty()) {
+                                            speakQuestion();
+                                        } else {
+                                            Toast.makeText(HomeActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                                            speak("Thank you for your time!");
+                                            stopListening();
+                                            webView1.evaluateJavascript("javascript:stopListening()", value -> {});
+                                            srError = false;
+                                            isListening = false;
+                                        }
+                                    } else {
+                                        Toast.makeText(HomeActivity.this, "Unexpected response from API", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(HomeActivity.this, "Error processing API response", Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            error -> {
+                                error.printStackTrace();
+                                String errorMessage = "Error connecting to API";
+
+                                if (error.networkResponse != null) {
+                                    try {
+                                        String responseBody = new String(error.networkResponse.data, "UTF-8");
+                                        JSONObject errorJson = new JSONObject(responseBody);
+                                        if (errorJson.has("error")) {
+                                            errorMessage = errorJson.getString("error");
+                                        } else {
+                                            errorMessage = responseBody;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        errorMessage = "Error parsing server response";
+                                    }
+                                } else if (error.getMessage() != null) {
+                                    errorMessage = error.getMessage();
+                                }
+
+                                Toast.makeText(HomeActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                                speak(errorMessage);
+                                speechRecognizer.cancel();
+                                stopListening();
+                                srError = true;
+                                isListening = false;
+                                webView1.evaluateJavascript("javascript:stopListening()", value -> {});
+                            }
+                    );
+
+                    Singleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
                 }
             } else {
                 Toast.makeText(HomeActivity.this, "No speech recognized", Toast.LENGTH_SHORT).show();
@@ -346,16 +558,19 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     String startDate = processStartTime;
                     String endDate = processEndTime;
                     String date = getCurrentDateTime();
-                    for (QuestionTemplate record:questionList){
+                    for (QuestionTemplate record:finalQuestionList){
                         String question = record.getQuestion();
                         String answer = record.getUserAnswer();
 
                         addAnswer(user, startDate, endDate, date, question, answer);
                     }
 
-                    callCorrectAnswersAPI(user);
+                    //callCorrectAnswersAPI(user, date);
 
                     speak("The conversation has been concluded successfully.");
+
+                    webView1.evaluateJavascript("javascript:showSuccess()", value -> {
+                    });
                 }
             });
         }
@@ -398,7 +613,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }).start();
         }
 
-        private void callCorrectAnswersAPI(String username) {
+        private void callCorrectAnswersAPI(String username, String date) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -410,11 +625,10 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         conn.setRequestProperty("Accept", "application/json");
                         conn.setDoOutput(true);
 
-                        // Create JSON object for the POST request
                         JSONObject json = new JSONObject();
                         json.put("username", username);
+                        json.put("date", date);
 
-                        // Send JSON data
                         OutputStream os = conn.getOutputStream();
                         byte[] input = json.toString().getBytes("utf-8");
                         os.write(input, 0, input.length);
@@ -429,7 +643,6 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                 response.append(inputLine);
                             }
                             in.close();
-                            // Print the response (optional)
                             System.out.println(response.toString());
                         } else {
                             System.out.println("POST request not worked");

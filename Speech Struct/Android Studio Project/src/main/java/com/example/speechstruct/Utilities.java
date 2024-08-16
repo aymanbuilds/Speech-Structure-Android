@@ -1,5 +1,5 @@
 package com.example.speechstruct;
 
 public class Utilities {
-    public static String DOMAIN = "http://192.168.0.0:5000";
+    public static String DOMAIN = "http://212.227.14.226:80";
 }

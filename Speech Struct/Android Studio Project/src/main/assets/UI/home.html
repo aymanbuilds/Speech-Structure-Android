@@ -9,6 +9,35 @@
     <!-- Styles -->
     <link rel="stylesheet" href="assets/styles/main.css">
     <link rel="stylesheet" href="assets/styles/common.css">
+
+    <style>
+        .success {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f2f6f5;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+            transition: 0.4s;
+        }
+
+        .success.show {
+            opacity: 1;
+            pointer-events: all;
+            visibility: visible;
+        }
+
+        .success img {
+            width: 80%;
+        }
+    </style>
 </head>
 
 <body>
@@ -43,6 +72,11 @@
             </div>
         </section>
     </main>
+</div>
+
+<!-- Success -->
+<div class="success">
+    <img src="assets/gifs/success.gif" alt="Success">
 </div>
 
 <!-- Scripts -->
@@ -104,8 +138,16 @@
         isPlaying = false;
     }
 
-    function concludeConversation(){
+    function concludeConversation() {
         Android.concludeConversation();
+    }
+
+    function showSuccess() {
+        document.querySelector('.success').classList.add('show');
+
+        setTimeout(() => {
+            document.querySelector('.success').classList.remove('show');
+        }, 3000);
     }
 </script>
 </body>
