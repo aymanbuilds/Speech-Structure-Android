@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms &amp; Services</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/common.css">
+</head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper centered padding20">
+    <!-- Main Section -->
+    <main class="stretched">
+        <!-- Terms & Services Section -->
+        <section id="termsAndServicesSection" class="stretched column gap50">
+            <!-- Section Header -->
+            <header style="height: 40px;" class="column gap5">
+                <h1 class="title">Terms &amp; Services</h1>
+                <p id="welcomeMessage" class="description"></p>
+            </header>
+
+            <!-- Main Content -->
+            <div class="flex1 overflowH column gap10">
+                <h2 class="sub-title">Summary</h2>
+
+                <div class="overflowY flex1">
+                    <p id="termsAndServicesText" class="description"></p>
+                </div>
+            </div>
+
+            <!-- Buttons Container -->
+            <div class="row aitems-center jcontent-sbetween gap10">
+                <button class="outlined" onclick="Android.cancel()">Cancel</button>
+                <button class="filled flex1" onclick="Android.confirm()">Confirm</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script>
+    let API_DOMAIN = '';
+
+    function setApiDomain(domain) {
+        API_DOMAIN = domain;
+        loadTerms();
+    }
+
+    function loadTerms() {
+        fetch(`${API_DOMAIN}/api/terms`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('welcomeMessage').innerText = data.welcome_message;
+                document.getElementById('termsAndServicesText').innerText = data.terms_text;
+                //document.getElementById('logoImage').src = data.logo_image;
+            })
+            .catch(error => console.error('Error fetching terms:', error));
+    }
+</script>
+</body>
+
+</html>

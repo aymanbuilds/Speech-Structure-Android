@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/common.css">
+</head>
+
+<body>
+<!-- Main Wrapper -->
+<div class="main-wrapper centered padding20 column gap30 relative">
+    <!-- Main Header -->
+    <header class="main row aitems-center jcontent-sbetween top-bar">
+        <img class="logo" src="assets/icons/logo.png" alt="Logo">
+        <h1 class="sub-title">SpeechStruct</h1>
+        <img onclick="Android.logout()" class="cpointer logo" src="assets/icons/logout.png" alt="Logout">
+    </header>
+
+    <!-- Main Section -->
+    <main class="stretched relative marginB40">
+        <!-- Terms Section -->
+        <section id="termsSection" class="absolute stretched column gap30 overflowY paddingB40 adminSection active">
+            <!-- Welcome Message -->
+            <div class="column gap10">
+                <h2 class="sub-title">Welcome message</h2>
+
+                <div class="row gap10 fieldset margin0 stretchedX">
+                    <div class="center">
+                        <img class="icon" src="assets/icons/text.png" alt="Username">
+                    </div>
+
+                    <input id="welcomeMessageTextBox" class="flex1" type="text" placeholder="Message text...">
+                </div>
+            </div>
+
+            <!-- Upload Logo -->
+            <button id="uploadImageBtn" onclick="uploadImage()" class="outlined stretchedX">Upload Logo</button>
+
+            <!-- Terms Content -->
+            <div class="column gap10">
+                <h2 class="sub-title">Terms content</h2>
+
+                <div class="row gap10 fieldset resize margin0 stretchedX">
+                    <div class="center">
+                        <img class="icon" src="assets/icons/text.png" alt="Username">
+                    </div>
+
+                    <textarea id="termsTextBox" class="flex1" placeholder="Terms text..."></textarea>
+                </div>
+            </div>
+
+            <!-- Update Button -->
+            <button class="filled stretchedX" onclick="updateTerms()">Confirm your entry</button>
+        </section>
+
+        <!-- Templates Section -->
+        <section id="templateSection"
+                 class="absolute stretched column gap30 overflowY paddingB40 adminSection active">
+            <!-- Add Button -->
+            <button class="filled stretchedX" onclick="showQuestionPopup()">Add new question</button>
+
+            <!-- Questions List -->
+            <ul id="questionList" class="column gap10">
+                <li>
+                    <div class="question-card column gap10">
+                        <!-- Category -->
+                        <div>
+                            <div class="sub-title">Category</div>
+                            <div class="description">C01</div>
+                        </div>
+
+                        <!-- Question Number -->
+                        <div>
+                            <div class="sub-title">Question Number</div>
+                            <div class="description">Feature 1</div>
+                        </div>
+
+                        <!-- Question Media -->
+                        <div>
+                            <div class="sub-title">Question Media</div>
+                            <div class="description">Media source</div>
+                        </div>
+
+                        <!-- Question -->
+                        <div>
+                            <div class="sub-title">Question</div>
+                            <div class="description">What's your name?</div>
+                        </div>
+
+                        <!-- Response Type -->
+                        <div>
+                            <div class="sub-title">Response Type</div>
+                            <div class="description">Single text response</div>
+                        </div>
+
+                        <!-- Answer Number -->
+                        <div>
+                            <div class="sub-title">Answer Number</div>
+                            <div class="description">A</div>
+                        </div>
+
+                        <!-- Answer Including Media -->
+                        <div>
+                            <div class="sub-title">Answer Including Media</div>
+                            <div class="description">Null</div>
+                        </div>
+
+                        <!-- Next Question -->
+                        <div>
+                            <div class="sub-title">Next Question</div>
+                            <div class="description">2</div>
+                        </div>
+
+                        <button class="filled" style="background-color: tomato;">Delete question</button>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Popup Model -->
+            <div class="template-popup">
+                <div class="root">
+                    <div class="inner aitems-center jcontent-center">
+                        <div class="column aitems-center gap5" style="padding: 10px;">
+                            <h2 class="title">New Question</h2>
+
+                            <div class="column gap10">
+                                <!-- Category -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="questionCategory" class="stretchedX" type="text"
+                                           placeholder="Category">
+                                </div>
+
+                                <!-- Question Number -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="questionNumber" class="stretchedX" type="text"
+                                           placeholder="Question Number">
+                                </div>
+
+                                <!-- Question Media -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="questionMedia" class="stretchedX" type="text"
+                                           placeholder="Question Media">
+                                </div>
+
+                                <!-- Question Text -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="questionText" class="stretchedX" type="text"
+                                           placeholder="Question Text">
+                                </div>
+
+                                <!-- Response Type -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="responseType" class="stretchedX" type="text"
+                                           placeholder="Response Type">
+                                </div>
+
+                                <!-- Answer Number -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="answerNumber" class="stretchedX" type="text"
+                                           placeholder="Answer Number">
+                                </div>
+
+                                <!-- Answer Including Media -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="answerIncludingMedia" class="stretchedX" type="text"
+                                           placeholder="Answer Including Media">
+                                </div>
+
+                                <!-- Next Question -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/text.png" alt="Text">
+                                    </div>
+
+                                    <input id="nextQuestion" class="stretchedX" type="text"
+                                           placeholder="Next Question">
+                                </div>
+
+                                <!-- Confirm Button -->
+                                <button onclick="addQuestion()" class="filled stretchedX marginT20">Confirm</button>
+
+                                <!-- Cancel Button -->
+                                <button onclick="hideQuestionPopup()" class="outlined stretchedX">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Section -->
+        <section id="usersSection" class="absolute stretched column gap30 overflowY paddingB40 adminSection active">
+            <!-- Add Button -->
+            <button class="filled stretchedX" onclick="showUserPopup()">Add new user</button>
+
+            <!-- Users List -->
+            <ul id="usersList" class="column gap10">
+                <li>
+                    <div class="user-card column gap10">
+                        <!-- Username -->
+                        <div class="row gap10 fieldset">
+                            <div class="center">
+                                <img class="icon" src="assets/icons/username.png" alt="Text">
+                            </div>
+
+                            <input id="username" class="stretchedX" type="text" value="user" placeholder="Username">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="row gap10 fieldset">
+                            <div class="center">
+                                <img class="icon" src="assets/icons/email.png" alt="Text">
+                            </div>
+
+                            <input id="email" class="stretchedX" type="text" value="user@email.com"
+                                   placeholder="Email">
+                        </div>
+
+                        <!-- Status -->
+                        <select id="userStatus" class="marginT20">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+
+                        <div class="center marginT20 gap10">
+                            <button class="filled">Update</button>
+                            <button class="filled" style="background-color: tomato;">Delete</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Popup Model -->
+            <div class="user-popup">
+                <div class="root">
+                    <div class="inner aitems-center jcontent-center">
+                        <div class="column aitems-center gap5" style="padding: 10px;">
+                            <h2 class="title">New User</h2>
+
+                            <div class="column gap10">
+                                <!-- Username -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/username.png" alt="Text">
+                                    </div>
+
+                                    <input id="username" class="stretchedX" type="text" placeholder="Username">
+                                </div>
+
+                                <!-- Email -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/email.png" alt="Text">
+                                    </div>
+
+                                    <input id="email" class="stretchedX" type="text" placeholder="Email">
+                                </div>
+
+                                <!-- Password -->
+                                <div class="row gap10 fieldset">
+                                    <div class="center">
+                                        <img class="icon" src="assets/icons/password.png" alt="Text">
+                                    </div>
+
+                                    <input id="password" class="stretchedX" type="password" placeholder="Password">
+                                </div>
+
+                                <!-- Confirm Button -->
+                                <button onclick="addUser()" class="filled stretchedX marginT20">Confirm</button>
+
+                                <!-- Cancel Button -->
+                                <button onclick="hideUserPopup()" class="outlined stretchedX">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Menu Bar -->
+    <footer id="menuBar" class="absolute row aitems-center jcontent-evenly">
+        <!-- Terms & Conditions Menu Item -->
+        <div class="active menu-item row gap10 aitems-center jcontent-center cpointer">
+            <img class="icon" src="assets/icons/terms.png" alt="Icon">
+            <div class="description">Terms</div>
+        </div>
+
+        <!-- Templates Menu Item -->
+        <div class="menu-item row gap10 aitems-center jcontent-center cpointer">
+            <img class="icon" src="assets/icons/template.png" alt="Icon">
+            <div class="description">Template</div>
+        </div>
+
+        <!-- Users Menu Item -->
+        <div class="menu-item row gap10 aitems-center jcontent-center cpointer">
+            <img class="icon" src="assets/icons/users.png" alt="Icon">
+            <div class="description">Users</div>
+        </div>
+    </footer>
+</div>
+
+<!-- Scripts -->
+<script src="assets/scripts/main.js"></script>
+<script>
+    let API_DOMAIN = '';
+
+    function setApiDomain(domain) {
+        API_DOMAIN = domain;
+        refreshData();
+    }
+
+    let uploadedImage = null;
+
+    function handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                uploadedImage = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function uploadImage() {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.onchange = handleImageUpload;
+        fileInput.click();
+    }
+
+    function updateTerms() {
+        const welcomeMessage = btoa(encodeURIComponent(document.getElementById('welcomeMessageTextBox').value));
+        const terms = btoa(encodeURIComponent(document.getElementById('termsTextBox').value));
+        Android.updateTerms(uploadedImage, welcomeMessage, terms);
+    }
+
+    async function getQuestions() {
+        const questionListElement = document.getElementById('questionList');
+        questionListElement.innerHTML = '';
+
+        try {
+            const response = await fetch(API_DOMAIN + '/api/read_template');
+            const templates = await response.json();
+
+            templates.forEach(template => {
+                const newListItem = document.createElement('li');
+                newListItem.innerHTML = `
+                    <div class="question-card column gap10">
+                        <!-- Category -->
+                        <div>
+                            <div class="sub-title">Category</div>
+                            <div class="description">${template.category}</div>
+                        </div>
+
+                        <!-- Question Number -->
+                        <div>
+                            <div class="sub-title">Question Number</div>
+                            <div class="description">${template.question_number}</div>
+                        </div>
+
+                        <!-- Question Media -->
+                        <div>
+                            <div class="sub-title">Question Media</div>
+                            <div class="description">${template.question_media}</div>
+                        </div>
+
+                        <!-- Question -->
+                        <div>
+                            <div class="sub-title">Question</div>
+                            <div class="description">${template.question}</div>
+                        </div>
+
+                        <!-- Response Type -->
+                        <div>
+                            <div class="sub-title">Response Type</div>
+                            <div class="description">${template.response_type}</div>
+                        </div>
+
+                        <!-- Answer Number -->
+                        <div>
+                            <div class="sub-title">Answer Number</div>
+                            <div class="description">${template.answer_number}</div>
+                        </div>
+
+                        <!-- Answer Including Media -->
+                        <div>
+                            <div class="sub-title">Answer Including Media</div>
+                            <div class="description">${template.answer_including_media}</div>
+                        </div>
+
+                        <!-- Next Question -->
+                        <div>
+                            <div class="sub-title">Next Question</div>
+                            <div class="description">${template.next_question}</div>
+                        </div>
+
+                        <button style="display: none;" class="filled" style="background-color: tomato;">Delete question</button>
+                    </div>
+                `;
+
+                questionListElement.appendChild(newListItem);
+            });
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+        }
+    }
+
+    function addQuestion() {
+        const category = document.getElementById('questionCategory').value;
+        const questionNumber = document.getElementById('questionNumber').value;
+        const questionMedia = document.getElementById('questionMedia').value;
+        const questionText = document.getElementById('questionText').value;
+        const responseType = document.getElementById('responseType').value;
+        const answerNumber = document.getElementById('answerNumber').value;
+        const answerIncludingMedia = document.getElementById('answerIncludingMedia').value;
+        const nextQuestion = document.getElementById('nextQuestion').value;
+
+        const encodedCategory = btoa(encodeURIComponent(category));
+        const encodedQuestionNumber = btoa(encodeURIComponent(questionNumber));
+        const encodedQuestionMedia = btoa(encodeURIComponent(questionMedia));
+        const encodedQuestionText = btoa(encodeURIComponent(questionText));
+        const encodedResponseType = btoa(encodeURIComponent(responseType));
+        const encodedAnswerNumber = btoa(encodeURIComponent(answerNumber));
+        const encodedAnswerIncludingMedia = btoa(encodeURIComponent(answerIncludingMedia));
+        const encodedNextQuestion = btoa(encodeURIComponent(nextQuestion));
+
+        Android.addQuestion(
+            encodedCategory,
+            encodedQuestionNumber,
+            encodedQuestionMedia,
+            encodedQuestionText,
+            encodedResponseType,
+            encodedAnswerNumber,
+            encodedAnswerIncludingMedia,
+            encodedNextQuestion
+        );
+
+        document.getElementById('questionCategory').value = '';
+        document.getElementById('questionNumber').value = '';
+        document.getElementById('questionMedia').value = '';
+        document.getElementById('questionText').value = '';
+        document.getElementById('responseType').value = '';
+        document.getElementById('answerNumber').value = '';
+        document.getElementById('answerIncludingMedia').value = '';
+        document.getElementById('nextQuestion').value = '';
+    }
+
+    function showQuestionPopup() {
+        const templatePopup = document.querySelector('.template-popup');
+        templatePopup.classList.add('show');
+    }
+
+    function hideQuestionPopup() {
+        const templatePopup = document.querySelector('.template-popup');
+        templatePopup.classList.remove('show');
+    }
+
+    function showUserPopup() {
+        const templatePopup = document.querySelector('.user-popup');
+        templatePopup.classList.add('show');
+    }
+
+    function hideUserPopup() {
+        const templatePopup = document.querySelector('.user-popup');
+        templatePopup.classList.remove('show');
+    }
+
+    async function getUsers() {
+        const usersListElement = document.getElementById('usersList');
+        usersListElement.innerHTML = '';
+
+        try {
+            const response = await fetch(API_DOMAIN + '/users');
+            const users = await response.json();
+
+            users.forEach(user => {
+                const newListItem = document.createElement('li');
+                newListItem.innerHTML = `
+                    <div class="user-card column gap10">
+                        <!-- Username -->
+                        <div class="row gap10 fieldset">
+                            <div class="center">
+                                <img class="icon" src="assets/icons/username.png" alt="Text">
+                            </div>
+                            <input id="username_${user.id}" class="stretchedX" type="text" value="${user.username}" placeholder="Username">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="row gap10 fieldset">
+                            <div class="center">
+                                <img class="icon" src="assets/icons/email.png" alt="Email">
+                            </div>
+                            <input id="email_${user.id}" class="stretchedX" type="text" value="${user.email}" placeholder="Date Created" disabled>
+                        </div>
+
+                        <!-- Date Created -->
+                        <div class="row gap10 fieldset">
+                            <div class="center">
+                                <img class="icon" src="assets/icons/text.png" alt="Calendar">
+                            </div>
+                            <input id="date_created_${user.id}" class="stretchedX" type="text" value="${user.date_created}" placeholder="Date Created" disabled>
+                        </div>
+
+                        <!-- Status -->
+                        <select id="userStatus_${user.id}" class="marginT20">
+                            <option value="active" ${user.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="inactive" ${user.status === 'inactive' ? 'selected' : ''}>Inactive</option>
+                        </select>
+
+                        <!-- Role -->
+                        <div class="row gap10 fieldset">
+                            <div class="center">
+                                <img class="icon" src="assets/icons/text.png" alt="Role">
+                            </div>
+                            <input id="role_${user.id}" class="stretchedX" type="text" value="${user.role}" placeholder="Role" disabled>
+                        </div>
+
+                        <div class="center marginT20 gap10" style="display: none;">
+                            <button class="filled">Update</button>
+                            <button class="filled" style="background-color: tomato;">Delete</button>
+                        </div>
+                    </div>
+                `;
+
+                usersListElement.appendChild(newListItem);
+            });
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    }
+
+    function addUser() {
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const encodedUsername = btoa(encodeURIComponent(username));
+        const encodedEmail = btoa(encodeURIComponent(email));
+        const encodedPassword = btoa(encodeURIComponent(password));
+
+        Android.addUser(
+            encodedUsername,
+            encodedEmail,
+            encodedPassword
+        );
+
+        document.getElementById('username').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+    }
+
+    function refreshData() {
+        getUsers();
+        getQuestions();
+    }
+</script>
+</body>
+
+</html>

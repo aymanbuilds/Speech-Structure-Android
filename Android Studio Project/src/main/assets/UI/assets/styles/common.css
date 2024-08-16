@@ -1,0 +1,220 @@
+/* Variables */
+:root {
+    --main-color: royalblue;
+}
+
+/* Fonts */
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../fonts/Montserrat.ttf);
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #eee;
+}
+
+::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+/* All Elements Styles */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+    outline: none;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Containers */
+.main-wrapper {
+    width: 400px;
+    height: 100%;
+    background-color: white;
+}
+
+@media (max-width: 400px) {
+    .main-wrapper {
+        width: 100%;
+    }
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.top-bar {
+    height: 60px;
+}
+
+header.main {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Properties */
+.centered {
+    margin: 0 auto;
+}
+
+.stretched {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.stretchedX {
+    width: 100%;
+}
+
+.padding20 {
+    padding: 20px;
+}
+
+.paddingB40 {
+    padding-bottom: 40px;
+}
+
+.aitems-center {
+    align-items: center;
+}
+
+.jcontent-sbetween {
+    justify-content: space-between;
+}
+
+.jcontent-evenly {
+    justify-content: space-evenly;
+}
+
+.jcontent-center {
+    justify-content: center;
+}
+
+.flex1 {
+    flex: 1;
+}
+
+.gap50 {
+    gap: 50px;
+}
+
+.gap30 {
+    gap: 30px;
+}
+
+.gap20 {
+    gap: 20px;
+}
+
+.gap10 {
+    gap: 10px;
+}
+
+.gap5 {
+    gap: 5px;
+}
+
+.overflowY {
+    overflow-y: auto;
+}
+
+.overflowH {
+    overflow: hidden;
+}
+
+.icon {
+    width: 24px;
+}
+
+.marginLauto {
+    margin-left: auto;
+}
+
+.margin0 {
+    margin: 0;
+}
+
+.marginT20 {
+    margin-top: 20px;
+}
+
+.cpointer {
+    cursor: pointer;
+}
+
+.logo {
+    width: 28px;
+}
+
+.marginB40 {
+    margin-bottom: 40px;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+/* Texts */
+.title {
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: #333;
+    user-select: none;
+}
+
+.sub-title {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: #333;
+    user-select: none;
+}
+
+.description {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    user-select: none;
+}
+
+/* Buttons */
+button {
+    border-radius: 10px;
+    font-size: 1.1rem;
+    padding: 16px 20px;
+    cursor: pointer;
+}
+
+button.filled {
+    background-color: var(--main-color);
+    color: white;
+}
+
+button.outlined {
+    background-color: transparent;
+    border: 1px solid var(--main-color);
+    color: var(--main-color);
+}

@@ -1,0 +1,261 @@
+/* Variables */
+:root {
+    --main-color: royalblue;
+    --secondary-color: rgb(65, 97, 185);
+}
+
+/* Body & HTML Styles */
+body,
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+    background-color: #f5f5f5;
+}
+
+#termsAndServicesSection {
+    width: 100%;
+    height: 100%;
+}
+
+#termsAndServicesText {
+    padding-right: 20px;
+}
+
+.logo-container {
+    padding: 20px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+#loginSection .title {
+    margin-top: 50px;
+}
+
+#loginSection .description {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.fieldset {
+    margin-top: 20px;
+    border: 1px solid #777;
+    border-radius: 10px;
+    width: 95%;
+    height: 55px;
+    overflow: hidden;
+}
+
+.fieldset.resize {
+    height: 10rem;
+}
+
+.fieldset textarea {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 1.1rem;
+    resize: none;
+}
+
+#resetPasswordSection .fieldset {
+    width: 100%;
+}
+
+.fieldset div {
+    width: 50px;
+    border-right: 1px solid #777;
+}
+
+.fieldset div img {
+    width: 24px;
+}
+
+.fieldset input {
+    padding-right: 20px;
+    font-size: 1.1rem;
+}
+
+#rememberMeContainer {
+    font-size: 1rem;
+    width: 95%;
+    margin-top: 20px;
+}
+
+#rememberMeContainer label,
+#rememberMeContainer p {
+    cursor: pointer;
+}
+
+#rememberMeContainer p {
+    color: var(--secondary-color);
+}
+
+#loginSection button {
+    margin-top: 20px;
+    width: 95%;
+}
+
+@media (max-height: 600px) {
+    #loginSection .logo-container {
+        display: none;
+    }
+
+    #loginSection .title {
+        margin-top: 0;
+    }
+}
+
+#resetPasswordSection .description {
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+
+#resetPasswordSection button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#voiceRecordSection h2 {
+    font-size: 2.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+#voiceRecordSection div.button {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #eee;
+    border: 1px solid #333;
+}
+
+#voiceRecordSection div.button img {
+    width: 64px;
+}
+
+#voiceRecordSection .stretchedX {
+    width: 95%;
+}
+
+#voiceRecordSection .sub-title {
+    font-size: 1.1rem;
+}
+
+#voiceRecordSection .question {
+    width: 95%;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #777;
+    margin-bottom: 40px;
+}
+
+#menuBar {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    border-top: 1px solid #ccc;
+}
+
+.menu-item img {
+    width: 24px;
+}
+
+.menu-item .description {
+    font-size: 1rem;
+    display: none;
+}
+
+.menu-item.active .description {
+    display: block;
+}
+
+.adminSection {
+    opacity: 0;
+    padding-right: 10px;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.adminSection.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+#questionText {
+    word-break: break-all;
+}
+
+.question-card,
+.user-card {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #777;
+    border-radius: 10px;
+}
+
+.user-card .fieldset{
+    width: 100%;
+}
+
+.user-card select{
+    width: 100%;
+    font-size: 1rem;
+    border: 1px solid #777;
+    border-radius: 10px;
+    height: 55px;
+    padding-left: 20px;
+}
+
+.template-popup,
+.user-popup {
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    transition: 0.4s;
+}
+
+.template-popup.show,
+.user-popup.show {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.template-popup .root,
+.user-popup .root {
+    width: 90%;
+    height: 80%;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+}
+
+.user-popup .root{
+    height: auto;
+}
+
+.template-popup .inner,
+.user-popup .inner {
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.template-popup .fieldset,
+.user-popup .fieldset {
+    width: 100%;
+}
